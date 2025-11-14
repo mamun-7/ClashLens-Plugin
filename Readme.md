@@ -1,12 +1,5 @@
-# ClashSolver - Intelligent BIM Design - IntelliBIM
+# Clash-Lens - Intelligent BIM Design
 AI-Powered Clash Resolution System
-
-#
-  Revit Plugins
-  
-  Backend
-
-  Frontend
 
 # Tech Stacks
   - Revit Plugin: RevitAPI, C#, WPF
