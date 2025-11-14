@@ -1,0 +1,148 @@
+﻿<Window x:Class="ClashSolver.UI.ValidationResolution.CopyFromLinks.WindowCopyFromLinks"
+							xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+							xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+							xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+							xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+							xmlns:local="clr-namespace:ClashSolver.UI.ValidationResolution.CopyFromLinks"
+							xmlns:conmponent="clr-namespace:Components;assembly=Components"
+							xmlns:util="clr-namespace:ClashSolver.UI"
+							mc:Ignorable="d" 
+							Title="Copy From Links"
+							Width="800" Height="450"
+							MinWidth="600" MinHeight="300"
+							d:DesignHeight="450" d:DesignWidth="800" WindowStartupLocation="CenterScreen">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<util:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+		</ResourceDictionary>
+	</Window.Resources>
+	
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<TabControl x:Name="tabMain" Grid.Row="0" Margin="5">
+			<!--<TabItem Name="pageGeneral" Header="General">
+				<Grid Margin="5">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+
+					--><!-- Copy Type Section --><!--
+					<StackPanel Grid.Row="0" Margin="10" IsEnabled="False">
+						<TextBlock Text="Copy Type:" FontWeight="Bold" />
+						<RadioButton Content="Overwrite current model" GroupName="CopyType" Margin="5" />
+						<RadioButton Content="Copy new changes only" GroupName="CopyType" IsChecked="True" Margin="5" />
+					</StackPanel>
+
+					--><!-- Worksets Section --><!--
+					<StackPanel Grid.Row="1" Margin="10" IsEnabled="False">
+						<TextBlock Text="Worksets:" FontWeight="Bold" Style="{StaticResource BoldTextBlockStyle}"/>
+						<RadioButton x:Name="rdbCopyWorkSetFromLink" Content="Create Worksets from Links" GroupName="Worksets" Style="{StaticResource RadioButtonStyle}" />
+						<RadioButton Content="Create one Workset per discipline" GroupName="WorksetCreate" IsEnabled="{Binding IsChecked, ElementName=rdbCopyWorkSetFromLink}" Margin="20,5,0,0" Style="{StaticResource RadioButtonStyle}" />
+						<RadioButton Content="Maintain link's Worksets" GroupName="WorksetCreate" IsEnabled="{Binding IsChecked, ElementName=rdbCopyWorkSetFromLink}" Margin="20,5,0,0" Style="{StaticResource RadioButtonStyle}" />
+						<RadioButton x:Name="rdbNotCopyWorkSetFromLink" Content="Do not create Worksets from Links" GroupName="Worksets" IsChecked="True" Style="{StaticResource RadioButtonStyle}" />
+						<CheckBox Content="Save original workset to copied Elements" IsChecked="{Binding IsOriginalWorksetsCopy}" Style="{StaticResource CheckBoxStyle}"/>
+					</StackPanel>
+
+					--><!-- Grids and Levels Section --><!--
+					<StackPanel Grid.Row="0" Grid.Column="1" Margin="10" Orientation="Vertical" HorizontalAlignment="Left">
+						<TextBlock Text="Grids and Levels:" Style="{StaticResource BoldTextBlockStyle}" />
+						--><!--<RadioButton x:Name="rdbCopyFromSpecific" Content="Copy from Specific Model" IsChecked="{Binding GridCopyType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=FROM_SPECIFIC}" GroupName="GridAndLevels" Style="{StaticResource RadioButtonStyle}"/>--><!--
+						<ComboBox x:Name="cmbCopyGridModel" ItemsSource="{Binding LinkedModels}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedCopyModel}" IsEnabled="true" Style="{StaticResource LargeComboBoxStyle}">
+							--><!--{Binding IsChecked, ElementName=rdbCopyFromSpecific}--><!--
+						</ComboBox>
+						--><!--<RadioButton Content="Default from Architectural Model" GroupName="GridAndLevels" IsChecked="{Binding GridCopyType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=FROM_ARCHITECTURE}" Style="{StaticResource RadioButtonStyle}"/>--><!--
+					</StackPanel>
+				</Grid>
+			</TabItem>-->
+			<TabItem Name="pageScope" Header="Scope">
+
+				<Grid Margin="5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="2*" />
+						<ColumnDefinition Width="3*" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="3*" />
+					</Grid.ColumnDefinitions>
+
+					<Grid Grid.Column="0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<TextBlock Text="Imported Links:" Style="{StaticResource BoldTextBlockStyle}"/>
+						<ListBox Name="listImportedLinks" Grid.Row="1" ItemsSource="{Binding LinkedModels}" SelectedItem="{Binding CurrentLinkedModel}" Margin="5" SelectionChanged="listImportedLinks_SelectionChanged">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<StackPanel x:Name="spImportLinks" Margin="2">
+										<TextBlock Text="{Binding Name}" Style="{StaticResource NormalTextBlockStyle}"/>
+									</StackPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</Grid>
+
+					<Grid Grid.Column="1">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<TextBlock Text="Categories from Current Selection:" Style="{StaticResource BoldTextBlockStyle}"/>
+						<ListView Name="listCategoriesFrom" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding CurrentElementCategories}" Margin="5">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<StackPanel x:Name="spCategories" Margin="2">
+										<TextBlock Text="{Binding Name}" Style="{StaticResource NormalTextBlockStyle}"/>
+									</StackPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListView>
+					</Grid>
+
+					<!-- Inclusion/Exclusion Buttons -->
+					<StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+						<Button Name="btnChooseAll" Content=">>" Style="{StaticResource SymbolButtonStyle}" Click="btnChooseAll_Click"/>
+						<Button Name="btnChoose" Content=">" Style="{StaticResource SymbolButtonStyle}" Click="btnChoose_Click"/>
+						<Button Name="btnDechoose" Content="&lt;" Style="{StaticResource SymbolButtonStyle}" Click="btnDechoose_Click"/>
+						<Button Name="btnDechooseAll" Content="&lt;&lt;" Style="{StaticResource SymbolButtonStyle}" Click="btnDechooseAll_Click"/>
+					</StackPanel>
+
+					<!-- Categories Section -->
+					<Grid Grid.Column="3">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<TextBlock Text="Categories from Current Selection:" Style="{StaticResource BoldTextBlockStyle}"/>
+						<ListBox Name="listCategoriesTo" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding CurrentSelElementCategories}" Margin="5">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<StackPanel x:Name="spCategories" Margin="2">
+										<TextBlock Text="{Binding Name}" Style="{StaticResource NormalTextBlockStyle}"/>
+									</StackPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</Grid>
+				</Grid>
+			</TabItem>
+		</TabControl>
+		<StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+			<!--<Button Style="{StaticResource FooterButtonStyle}" Content="Reset" Click="btnReset_Click" />
+			<Button Style="{StaticResource FooterButtonStyle}" Content="ManageLinks" Click="btnManageLink_Click"/>-->
+			<Button Style="{StaticResource FooterButtonStyle}" Content="Run" Click="btnRun_Click"/>
+			<Button Style="{StaticResource FooterButtonStyle}" Content="Cancel" Click="btnCancel_Click" />
+			<Button Style="{StaticResource FooterButtonStyle}" Content="Copilot >>" Click="btnCopilot_Click" />
+		</StackPanel>
+	</Grid>
+</Window>

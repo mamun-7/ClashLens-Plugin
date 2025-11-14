@@ -1,0 +1,306 @@
+﻿<Page x:Class="ClashSolver.Forms.IssueDockPanel"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			xmlns:local="clr-namespace:ClashSolver.Forms"
+			xmlns:control="clr-namespace:Components;assembly=Components"
+			xmlns:model="clr-namespace:ClashSolver.UI;assembly=ClashSolver.UI"
+			xmlns:util="clr-namespace:ClashSolver.UI;assembly=ClashSolver.UI"
+			xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+			xmlns:uicomponents="clr-namespace:ClashSolver.UI.UIComponents;assembly=ClashSolver.UI"
+			mc:Ignorable="d" 
+			Background="White"
+			MinHeight="800" MinWidth="600"
+      d:DesignHeight="800" d:DesignWidth="300">
+
+	<Page.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<util:EnumDescriptionConverter x:Key="EnumConverter"/>
+			<ObjectDataProvider x:Key="StatusEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+				<ObjectDataProvider.MethodParameters>
+					<x:Type TypeName="model:IssueStatus"/>
+				</ObjectDataProvider.MethodParameters>
+			</ObjectDataProvider>
+			<ObjectDataProvider x:Key="DisciplineEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+				<ObjectDataProvider.MethodParameters>
+					<x:Type TypeName="model:LinkDiscipline"/>
+				</ObjectDataProvider.MethodParameters>
+			</ObjectDataProvider>
+		</ResourceDictionary>
+	</Page.Resources>
+	<Grid>
+		<!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
+		<!--<Grid>-->
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<!--Header Status Section-->
+		<!--<DockPanel Grid.Row="0" HorizontalAlignment="Left">
+		<TextBlock Text="{Binding ValidationTime}" DockPanel.Dock="Right" Style="{StaticResource NormalTextBlockStyle}"/>
+		<TextBlock Text="Validation Time:" DockPanel.Dock="Left" Style="{StaticResource BoldTextBlockStyle}"/>
+	</DockPanel>-->
+
+		<!-- By Clash Detection Set -->
+		<StackPanel Grid.Row="1" Orientation="Horizontal">
+			<CheckBox x:Name="chkFilterByClashSet" Content="Filter By Set" IsChecked="{Binding IsFilterBySet}" Style="{StaticResource CheckBoxStyle}"/>
+			<control:MultiSelectComboBox Width="150" Height="20" ItemsSource="{Binding FilterSets}" SelectedItems="{Binding SelectedFilterSets}" DockPanel.Dock="Left" IsEnabled="{Binding IsChecked, ElementName=chkFilterByClashSet}"/>
+			<Button x:Name="btnUpdate" Content="Update" Style="{StaticResource SmallButtonStyle}" Click="btnUpdate_Click"/>
+		</StackPanel>
+		<!--Issue Grid Section-->	
+
+		<DockPanel Grid.Row="2" Panel.ZIndex="0">
+
+			<!--</ScrollViewer>-->
+		<DataGrid Name="gridIssues" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Issues}" SelectedItem="{Binding SelectedIssue, Mode=TwoWay}" SelectionMode="Single" SelectionUnit="FullRow"  DockPanel.Dock="Left" HeadersVisibility="Column" RowHeaderWidth="0" HorizontalScrollBarVisibility="Auto" MouseDoubleClick="gridIssues_MouseDoubleClick" IsKeyboardFocusWithinChanged="DataGridIssues_IsKeyboardFocusWithinChanged" LostFocus="DataGridIssue_LostFocus" GotFocus="DataGridIssue_GotFocus" LostKeyboardFocus="DataGridIssue_LostKeyboardFocus">
+				<DataGrid.Resources>
+					<Style TargetType="{x:Type DataGridColumnHeader}">
+						<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+						<Setter Property="ContextMenu">
+							<Setter.Value>
+								<ContextMenu>
+									<MenuItem Header="Show/Hide Columns" Command="{Binding }"/>
+								</ContextMenu>
+							</Setter.Value>
+						</Setter>
+					</Style>
+					<SolidColorBrush x:Key="SelectionColorKey" Color="DarkBlue"/>
+					<Style TargetType="DataGridRow">
+						<Style.Resources>
+							<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{Binding Source={StaticResource SelectionColorKey}, Path=Color}"/>
+						</Style.Resources>
+					</Style>
+					<DataTemplate x:Key="HeaderTemplate">
+						<Grid Margin="0,0,3,0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="30"/>
+							</Grid.ColumnDefinitions>
+
+							<ContentControl Grid.Column="0" Content="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+							<ToggleButton Name="FilterButton" Grid.Column="1" HorizontalAlignment="Right" Content="▼" Margin="2, 1, 1, 1" Padding="3, 0" Command="{Binding DataContext.FilterCommand, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding}"/>
+							<Popup IsOpen="{Binding IsChecked, ElementName=FilterButton}" PlacementTarget="{Binding ElementName=FilterButton}" StaysOpen="False">
+								<Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="3" MinHeight="300">
+									<Grid Margin="5">
+										<Grid.RowDefinitions>
+											<RowDefinition Height="*"/>
+											<RowDefinition Height="Auto"/>
+										</Grid.RowDefinitions>
+										<uicomponents:SelectControl Items="{Binding DataContext.Filters, RelativeSource={RelativeSource AncestorType=Page}}"/>
+										<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+											<Button x:Name="btnOK" Content="OK" Style="{StaticResource FooterButtonStyle}" IsDefault="True" Click="btnOK_Click"/>
+											<Button x:Name="btnCancel" Content="Cancel" Style="{StaticResource FooterButtonStyle}" Click="btnCancel_Click"/>
+										</StackPanel>
+									</Grid>
+								</Border>
+							</Popup>
+						</Grid>
+					</DataTemplate>
+				</DataGrid.Resources>
+				<DataGrid.Columns>
+					<!--<DataGridTemplateColumn Header="No" IsReadOnly="True" Width="Auto" HeaderStyle="{StaticResource CenterDataGridColumnHeader}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding No}" HorizontalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>-->
+
+					<DataGridTemplateColumn Header="ID" IsReadOnly="True" Width="Auto" HeaderStyle="{StaticResource CenterDataGridColumnHeader}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTemplateColumn Header="ElementA" IsReadOnly="true" Width="Auto" HeaderTemplate="{StaticResource HeaderTemplate}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding ElementA}" Style="{StaticResource NormalTextBlockStyle}"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTemplateColumn Header="ElementB" IsReadOnly="true" Width="Auto" HeaderTemplate="{StaticResource HeaderTemplate}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding ElementB}" Style="{StaticResource NormalTextBlockStyle}"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<!--<DataGridTextColumn Header="ElementA" Binding="{Binding ElementA}" IsReadOnly="True" Width="100"/>
+				<DataGridTextColumn Header="ElementB" Binding="{Binding ElementB}" IsReadOnly="True" Width="100"/>-->
+					<DataGridTemplateColumn Header="Status" IsReadOnly="False" MinWidth="100" Width="Auto" HeaderTemplate="{StaticResource HeaderTemplate}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox Name="cmbIssueStatus" ItemsSource="{Binding Source={StaticResource StatusEnumValues}}" SelectedItem="{Binding Status}" Margin="0" Width="Auto" Style="{StaticResource NormalComboBoxStyle}" SelectionChanged="cmbIssueStatus_SelectionChanged">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Converter={StaticResource EnumConverter}}"/>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTemplateColumn Header="Resolution" IsReadOnly="False" Width="Auto" HeaderStyle="{StaticResource CenterDataGridColumnHeader}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Button x:Name="btnResolution" Content="{Binding ResolveStatus}" Click="btnResolution_Click"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTemplateColumn Header="Assigned To" IsReadOnly="False" MinWidth="100" Width="Auto" HeaderTemplate="{StaticResource HeaderTemplate}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox Name="cmbAssignTo" ItemsSource="{Binding Source={StaticResource DisciplineEnumValues}}" SelectedItem="{Binding AssignedBy}" Margin="0" Width="Auto" Style="{StaticResource NormalComboBoxStyle}" SelectionChanged="cmbAssignTo_SelectionChanged">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Converter={StaticResource EnumConverter}}"/>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTemplateColumn Header="Severity" IsReadOnly="true" Width="Auto	" HeaderTemplate="{StaticResource HeaderTemplate}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Severity}" HorizontalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTemplateColumn Header="Found" IsReadOnly="true" Width="120" HeaderStyle="{StaticResource CenterDataGridColumnHeader}">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding AnalyzedAt}" HorizontalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridComboBoxColumn Header="Visibility" SelectedValueBinding="{Binding Visibility}" IsReadOnly="False" Width="100" Visibility="Collapsed" HeaderStyle="{StaticResource CenterDataGridColumnHeader}"/>
+					<DataGridTemplateColumn Header="Description" IsReadOnly="true" Width="Auto" HeaderStyle="{StaticResource CenterDataGridColumnHeader}" Visibility="Collapsed">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Description}" Style="{StaticResource NormalTextBlockStyle}"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+				</DataGrid.Columns>
+			</DataGrid>
+		</DockPanel>
+
+		<!--For Pagination-->
+		<DockPanel Grid.Row="3" Panel.ZIndex="0">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">
+				<Button x:Name="btnPrevious" Content="&lt;" Width="30"  Margin="0,5" Style="{StaticResource SmallButtonStyle}" Click="btnPrevious_Click"/>
+				<TextBox x:Name="txtPage" Text="{Binding CurrentPageNumber}" VerticalAlignment="Center" Style="{StaticResource SmallTextBoxStyle}"/>
+				<TextBlock Text="of " Margin="0,5" Style="{StaticResource NormalTextBlockStyle}"/>
+				<TextBlock Text="{Binding PageCount}" Style="{StaticResource NormalTextBlockStyle}"/>
+				<TextBlock Text=" Pages" Margin="0,5" Style="{StaticResource NormalTextBlockStyle}"/>
+				<Button x:Name="btnNext" Content="&gt;" Width="30" Margin="5,5,0,5" Style="{StaticResource SmallButtonStyle}" Click="btnNext_Click"/>
+			</StackPanel>
+		</DockPanel>
+
+		<!--Selection and Manipulation-->
+		<Grid Grid.Row="4" Visibility="Collapsed">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+
+			<GroupBox Grid.Column="0" Header="Selection" Margin="5">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+					<Button Name="btnSelAll" Content="All" Style="{StaticResource ContentButtonStyle}" Click="btnSelAll_Click"/>
+					<Button Name="btnSelNone" Content="None" Style="{StaticResource ContentButtonStyle}" Click="btnSelNone_Click"/>
+					<Button Name="btnSelInvert" Content="Invert" Style="{StaticResource ContentButtonStyle}" Click="btnSelInvert_Click"/>
+					<Button Name="btnClearAll" Content="ClearAll" Style="{StaticResource ContentButtonStyle}" Click="btnClearAll_Click"/>
+				</StackPanel>
+			</GroupBox>
+			<StackPanel Grid.Column="2" Orientation="Vertical" VerticalAlignment="Center" Visibility="Collapsed">
+				<TextBlock Text="Visibility:" Style="{StaticResource NormalTextBlockStyle}"/>
+				<ComboBox Name="cmbVisibility" SelectedValue="{Binding ByVisibility}" Width="Auto" Style="{StaticResource NormalComboBoxStyle}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Converter={StaticResource EnumConverter}}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+			</StackPanel>
+			<StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center" Visibility="Collapsed">
+				<TextBlock Text="Status as:" Style="{StaticResource NormalTextBlockStyle}"/>
+				<ComboBox Name="cmbStatus" SelectedValue="{Binding ByStatus}" Style="{StaticResource NormalComboBoxStyle}" SelectionChanged="cmbStatus_SelectionChanged">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Converter={StaticResource EnumConverter}}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+			</StackPanel>
+		</Grid>
+
+		<!--Footer Section-->
+		<DockPanel Grid.Row="5" HorizontalAlignment="Left" LastChildFill="False">
+			<!--<Button Name="btnExport" Content="Export To Excel" Width="80" Style="{StaticResource FooterButtonStyle}" DockPanel.Dock="Left" Click="btnRefresh_Click"/>-->
+			<Button Name="btnImport" Content="Import" Style="{StaticResource FooterButtonStyle}" DockPanel.Dock="Left" Click="btnImport_Click"/>
+			<Button Name="btnExport" Content="Export" Style="{StaticResource FooterButtonStyle}" DockPanel.Dock="Left" Click="btnReport_Click"/>
+			<Button Name="btnRefresh" Content="Reset" Width="80" Style="{StaticResource FooterButtonStyle}" DockPanel.Dock="Left" Click="btnRefresh_Click"/>
+			<!--<Button Name="btnOK" Content="OK" Width="80" Style="{StaticResource FooterButtonStyle}" DockPanel.Dock="Left"/>-->
+			<Button Name="btnCopilot" Content="Copilot >>" Style="{StaticResource FooterButtonStyle}" DockPanel.Dock="Left"/>
+		</DockPanel>
+		<!--</Grid>-->
+
+		<!--<StackPanel x:Name="filterPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="250,0,0,0">
+			--><!--<CheckBox Name="chk1"/>--><!--
+			<Popup x:Name="popup" IsOpen="{Binding IsOpen}" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<Border Background="White">
+					<Grid Margin="5">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="*"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<ListBox Grid.Row="0" ItemsSource="{Binding SelectableItems}">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<Grid Margin="5">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<CheckBox Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding Selected}" Style="{StaticResource CheckBoxStyle}"/>
+										<TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+									</Grid>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+						<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+							<Button x:Name="btnOK" Content="OK" Style="{StaticResource FooterButtonStyle}" IsDefault="True" Click="btnOK_Click"/>
+							<Button x:Name="btnCancel" Content="Cancel" Style="{StaticResource FooterButtonStyle}" Click="btnCancel_Click"/>
+						</StackPanel>
+					</Grid>
+				</Border>
+			</Popup>
+		</StackPanel>-->
+
+		<Grid x:Name="OverlayPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="20">
+			
+		</Grid>
+
+	</Grid>
+
+
+</Page>

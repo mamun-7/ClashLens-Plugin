@@ -1,0 +1,183 @@
+﻿<Window x:Class="ClashSolver.UI.Views.ValidationResolution.ReviewIssues.ResolveWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:ClashSolver.UI.Views.ValidationResolution.ReviewIssues"
+				xmlns:sys="clr-namespace:System;assembly=mscorlib"
+				xmlns:model="clr-namespace:ClashSolver.UI"
+				xmlns:control="clr-namespace:ClashSolver.UI"
+        mc:Ignorable="d" 
+				Title="Resolutions"
+        Width="800" Height="450"
+        MinWidth="600" MinHeight="300"
+        d:DesignHeight="450" d:DesignWidth="800">
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<control:EnumDescriptionConverter x:Key="EnumConverter"/>
+			<ObjectDataProvider x:Key="RoundupEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+				<ObjectDataProvider.MethodParameters>
+					<x:Type TypeName="model:RoundupType"/>
+				</ObjectDataProvider.MethodParameters>
+			</ObjectDataProvider>
+			<ObjectDataProvider x:Key="DirectionEnumValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+				<ObjectDataProvider.MethodParameters>
+					<x:Type TypeName="model:Direction"/>
+				</ObjectDataProvider.MethodParameters>
+			</ObjectDataProvider>
+		</ResourceDictionary>
+
+	</Window.Resources>
+
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<!-- Consultant Links Section -->
+		<GroupBox Grid.Row="0" Header="Resolves" HorizontalAlignment="Stretch">
+			<Grid>
+				<!-- Data Grid -->
+				<DataGrid x:Name="gridResolves" Grid.Column="1" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Resolves}" SelectedItem="{Binding SelectedResolve}" SelectionMode="Single" HeadersVisibility="Column" RowHeaderWidth="0" SelectionChanged="gridResolves_SelectionChanged">
+					<DataGrid.Resources>
+						<Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DataGridColumnHeaderWithBorder}"/>
+					</DataGrid.Resources>
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="No" Width="50" Binding="{Binding No}" IsReadOnly="True" HeaderStyle="{ StaticResource CenterDataGridColumnHeader}" />
+						<DataGridTextColumn Header="Target" Width="150" Binding="{Binding TargetName}" IsReadOnly="True" HeaderStyle="{ StaticResource CenterDataGridColumnHeader}"/>
+						<DataGridComboBoxColumn Header="Target" Width="200" SelectedItemBinding="{Binding TargetId}" Visibility="Collapsed">
+							<DataGridComboBoxColumn.ElementStyle>
+								<Style TargetType="ComboBox">
+									<Setter Property="ItemsSource" Value="{Binding Path=TargetIds}"/>
+									<Setter Property="SelectedItem" Value="{Binding Path=TargetId}"/>
+									<Setter Property="IsHitTestVisible" Value="False" />
+									<Setter Property="Focusable" Value="False" />
+								</Style>
+							</DataGridComboBoxColumn.ElementStyle>
+							<DataGridComboBoxColumn.EditingElementStyle>
+								<Style TargetType="ComboBox">
+									<Setter Property="ItemsSource" Value="{Binding Path=TargetIds}"/>
+									<Setter Property="SelectedItem" Value="{Binding Path=TargetId}"/>
+								</Style>
+							</DataGridComboBoxColumn.EditingElementStyle>
+						</DataGridComboBoxColumn>
+						<DataGridTextColumn Header="Description" Width="*" Binding="{Binding Description}" IsReadOnly="True" HeaderStyle="{ StaticResource CenterDataGridColumnHeader}"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</Grid>
+		</GroupBox>
+
+		<GroupBox Grid.Row="1" Header="Settings" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DataContext="{Binding Settings}">
+			<StackPanel Orientation="Vertical">
+				<Grid Name="gridOpeningSettings" Margin="5">
+					<Grid.Style>
+						<Style TargetType="Grid">
+							<Setter Property="Visibility" Value="Collapsed"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding DataContext.SelectedResolve.Type, RelativeSource={RelativeSource AncestorType=Window}}" Value="Opening">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Grid.Style>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="6*"/>
+						<ColumnDefinition Width="4*"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="Create Vertical openings if Reference and Host-Elements are parallel" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+					<CheckBox x:Name="chkCreateVerticalOpening" Grid.Row="0" Grid.Column="1" IsEnabled="False" IsChecked="{Binding IsCreateVerticalOpening}" VerticalAlignment="Center" Style="{StaticResource CheckBoxStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="0" Text="Create Horizontal openings if Reference and Host-Elements are parallel" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+					<CheckBox x:Name="chkCreateHorizontalOpening" Grid.Row="1" Grid.Column="1" IsChecked="{Binding IsCreateHorizontalOpening}" IsEnabled="False" VerticalAlignment="Center" Style="{StaticResource CheckBoxStyle}"/>
+					<TextBlock Grid.Row="2" Grid.Column="0" Text="Ignore openings smaller than" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+					<StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+						<TextBox x:Name="txtIgnoreTolerance" Text="{Binding MinOpeningSize}" Height="20" HorizontalAlignment="Left" Style="{StaticResource SmallTextBoxStyle}"/>
+						<TextBlock Text="mm" VerticalAlignment="Center" Margin="0" Style="{StaticResource NormalTextBlockStyle}"/>
+					</StackPanel>
+					<TextBlock Grid.Row="3" Grid.Column="0" Text="Round openings become rectangular if diameter is greater than" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+					<StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+						<TextBox x:Name="txtRectangular" Text="{Binding MinDiameterToRect}" Height="20" HorizontalAlignment="Left" Style="{StaticResource SmallTextBoxStyle}"/>
+						<TextBlock Text="mm" VerticalAlignment="Center" Margin="0" Style="{StaticResource NormalTextBlockStyle}"/>
+					</StackPanel>
+					<TextBlock Grid.Row="4" Grid.Column="0" Text="Join openings at a distance of" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}" Visibility="Collapsed"/>
+					<StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Visibility="Collapsed">
+						<TextBox x:Name="txtJoinOpening" Text="{Binding MinDistanceToJoin}" Height="20" HorizontalAlignment="Left" Style="{StaticResource SmallTextBoxStyle}"/>
+						<TextBlock Text="mm" VerticalAlignment="Center" Margin="0" Style="{StaticResource NormalTextBlockStyle}"/>
+					</StackPanel>
+					<TextBlock Grid.Row="5" Grid.Column="0" Text="Ignore openings with an angle greater than" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+					<StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+						<TextBox x:Name="txtIgnoreAngle" Text="{Binding MinOpeningSlope}" Height="20" HorizontalAlignment="Left" Style="{StaticResource SmallTextBoxStyle}"/>
+						<TextBlock Text="°" VerticalAlignment="Center" Margin="0" Style="{StaticResource NormalTextBlockStyle}"/>
+					</StackPanel>
+
+					<TextBlock Grid.Row="6" Grid.Column="0" Text="Round up opening dimensions" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+					<ComboBox x:Name="cmbRoundupType" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,50,0" ItemsSource="{Binding Source={StaticResource RoundupEnumValues}}" SelectedItem="{Binding RoundupType}" Style="{StaticResource StretchComboBoxStyle}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Converter={StaticResource EnumConverter}}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+
+
+					<!--<TextBlock Grid.Row="6" Grid.Column="0" Text="Create openings wih a slope" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>-->
+					<!--<CheckBox Grid.Row="6" Grid.Column="1"  x:Name="chkCreateSlopeOpening" IsChecked="{Binding IsCreateSlopOpening}" Style="{StaticResource CheckBoxStyle}"/>-->
+				</Grid>
+				<Grid Name="gridReRouteSettings" Margin="5" Visibility="Collapsed">
+					<Grid.Style>
+						<Style TargetType="Grid">
+							<Setter Property="Visibility" Value="Collapsed"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding DataContext.SelectedResolve.Type, RelativeSource={RelativeSource AncestorType=Window}}" Value="Reroute">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Grid.Style>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="6*"/>
+						<ColumnDefinition Width="4*"/>
+					</Grid.ColumnDefinitions>
+
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="Rerouting Direction " VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+					<ComboBox x:Name="cmbReRoutingDirection" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,50,0" ItemsSource="{Binding Source={StaticResource DirectionEnumValues}}" SelectedItem="{Binding ReRouteDirection}" Style="{StaticResource StretchComboBoxStyle}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Converter={StaticResource EnumConverter}}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</Grid>
+			</StackPanel>
+		</GroupBox>
+
+		<!--Footer Buttons -->
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+			<Button Name="btnOK" Content="OK" Style="{StaticResource FooterButtonStyle}" Click="btnOK_Click"/>
+			<Button Name="btnCancel" Content="Cancel" Style="{StaticResource FooterButtonStyle}" Click="btnCancel_Click"/>
+		</StackPanel>
+	</Grid>
+</Window>

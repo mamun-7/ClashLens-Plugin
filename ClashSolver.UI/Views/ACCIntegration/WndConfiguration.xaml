@@ -1,0 +1,72 @@
+﻿<Window x:Class="ClashSolver.UI.Views.ACCIntegration.WndConfiguration"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			xmlns:local="clr-namespace:ClashSolver.UI.Views.ACCIntegration"
+			xmlns:busyIndicator="https://github.com/moh3ngolshani/BusyIndicator"
+			xmlns:sys="clr-namespace:System;assembly=mscorlib"
+			mc:Ignorable="d"
+			Background="White"
+			Title="Login/Logout"
+			Height="250" Width="450"
+			d:DesignHeight="250" d:DesignWidth="450"
+			x:Name="LoginWindow"
+			ResizeMode="NoResize">
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+				<ResourceDictionary Source="pack://application:,,,/BusyIndicator;component/Theme/Default.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<sys:Double x:Key="IndicatorScaleX" >1</sys:Double>
+			<sys:Double x:Key="IndicatorScaleY" >1</sys:Double>
+			<SolidColorBrush x:Key="IndicatorForeground" Color="#FF0991FA" />
+			<SolidColorBrush x:Key="IndicatorBackground" Color="#FF36E00E" />
+		</ResourceDictionary>
+	</Window.Resources>
+	<busyIndicator:BusyMask x:Name="BusyIndicator" BusyContent="Please wait..." IndicatorType="Ellipse"
+        Background="#D8FFFFFF" BusyContentMargin="10" IsBusy="{Binding IsLoading}" IsBusyAtStartup="False">
+		<Grid Margin="10">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<GroupBox Header="Forge Keys" Grid.Row="0">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="3*"/>
+						<ColumnDefinition Width="6*"/>
+						<ColumnDefinition Width="1*"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="Client ID(*)" HorizontalAlignment="Right" Style="{StaticResource NormalTextBlockStyle}"/>
+					<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ClientId}" Height="20" IsEnabled="{Binding IsEnabled}" Style="{StaticResource StretchedTextBoxStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="0" Text="Client Secret(*)" HorizontalAlignment="Right" Style="{StaticResource NormalTextBlockStyle}"/>
+					<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ClientSecret}" IsEnabled="{Binding IsEnabled}" Height="20" HorizontalAlignment="Stretch" Style="{StaticResource StretchedTextBoxStyle}"/>
+					<TextBlock Grid.Row="2" Grid.Column="0" Text="PORT" HorizontalAlignment="Right" Style="{StaticResource NormalTextBlockStyle}"/>
+					<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Port}" Height="20" IsEnabled="{Binding IsEnabled}" Style="{StaticResource StretchedTextBoxStyle}"/>
+					<TextBlock Grid.Row="3" Grid.Column="0" Text="Redirect URI" HorizontalAlignment="Right" Style="{StaticResource NormalTextBlockStyle}"/>
+					<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding RedirectURI}" IsEnabled="{Binding IsEnabled}" Height="20" Style="{StaticResource StretchedTextBoxStyle}"/>
+				</Grid>
+			</GroupBox>
+			<Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,5,0,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="4*"/>
+					<ColumnDefinition Width="6*"/>
+				</Grid.ColumnDefinitions>
+				<TextBlock Grid.Column="0" Text="{Binding StatusText}" HorizontalAlignment="Left" Margin="10,0,0,0" Style="{StaticResource NormalTextBlockStyle}"/>
+				<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+					<Button Name="btnLogin" Grid.Column="1" Content="{Binding ButtonText}" Click="btnLogin_Click" Style="{StaticResource FooterButtonStyle}"/>
+					<Button Name="btnCancel" Grid.Column="2" Content="Close" Click="btnCancel_Click" Style="{StaticResource FooterButtonStyle}"/>
+				</StackPanel>
+			</Grid>
+		</Grid>
+	</busyIndicator:BusyMask>
+</Window>

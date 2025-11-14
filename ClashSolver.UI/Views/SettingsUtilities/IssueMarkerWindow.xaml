@@ -1,0 +1,140 @@
+﻿<Window		x:Class="ClashSolver.UI.SettingsUtilities.IssueMarkerWindow"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			xmlns:local="clr-namespace:ClashSolver.UI.SettingsUtilities"
+			xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+			xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+			xmlns:component="clr-namespace:Components;assembly=Components"
+      xmlns:util="clr-namespace:ClashSolver.UI" 
+			mc:Ignorable="d" 
+			Title="Clash Marker Setting"
+			Height="450" Width="800"
+			MinHeight="300" MinWidth="600"
+			d:DesignHeight="450" d:DesignWidth="800" WindowStartupLocation="CenterScreen">
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<util:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="40"/>
+		</Grid.RowDefinitions>
+
+		<CheckBox Content="Show Clash Markers" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsShowClashMarkers}" Style="{StaticResource CheckBoxStyle}"/>
+
+		<Grid Grid.Row="1" IsEnabled="{Binding IsShowClashMarkers}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid Grid.Column="0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<GroupBox Header="Text Style" Grid.Row="0">
+					<Grid HorizontalAlignment="Center">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="1*"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Text="Size:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+						<xctk:IntegerUpDown Name="sizeMarkerControl" Grid.Row="0" Grid.Column="1" Width="100" Minimum="100" Maximum="500" Increment="50" Value="{Binding TextSize}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+						<TextBlock Text="Color:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+						<StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition	Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+
+								<xctk:ColorPicker Name="BtnHighColor" Grid.Row="0" Grid.Column="0" SelectedColor="{Binding TextColor.HighColor}" Width="100"/>
+								<xctk:ColorPicker Name="BtnMediumColor" Grid.Row="1" Grid.Column="0" SelectedColor="{Binding TextColor.MediumColor}" Width="100"/>
+								<xctk:ColorPicker Name="BtnLowColor" Grid.Row="2" Grid.Column="0" SelectedColor="{Binding TextColor.LowColor}" Width="100"/>
+								<TextBlock Text="(High)" Grid.Column="1" Grid.Row="0" Style="{StaticResource NormalTextBlockStyle}"/>
+								<TextBlock Text="(Medium)"  Grid.Column="1" Grid.Row="1" Style="{StaticResource NormalTextBlockStyle}"/>
+								<TextBlock Text="(Low)"  Grid.Column="1" Grid.Row="2" Style="{StaticResource NormalTextBlockStyle}"/>
+							</Grid>
+						</StackPanel>
+					</Grid>
+				</GroupBox>
+				<GroupBox Header="Box Style" Grid.Row="1">
+					<Grid HorizontalAlignment="Center">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Text="Size:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+						<xctk:IntegerUpDown Name="sizeBoxControl" Width="100" Grid.Column="1" Minimum="100" Maximum="500" Increment="50" Grid.Row="1" Value="{Binding BoxSize}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0, 5, 0, 5"/>
+						<TextBlock Text="Shape:" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+
+						<TextBlock Text="Color:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+						<StackPanel Grid.Row="2" Grid.Column="1" Margin="0,5,0,5">
+							<RadioButton Content="Bubble" IsChecked="{Binding MarkerType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Bubble}" Style="{StaticResource RadioButtonStyle}"/>
+							<RadioButton x:Name="rdbBox" Content="Box" IsChecked="{Binding MarkerType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Box}" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource RadioButtonStyle}"/>
+						</StackPanel>
+
+						<TextBlock Text="Box Color:" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+						<StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition	Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+
+								<xctk:ColorPicker Name="BtnBoxHighColor" Grid.Row="0" Grid.Column="0" SelectedColor="{Binding BoxColor.HighColor}" Width="100"/>
+								<xctk:ColorPicker Name="BtnBoxMediumColor" Grid.Row="1" Grid.Column="0" SelectedColor="{Binding BoxColor.MediumColor}" Width="100"/>
+								<xctk:ColorPicker Name="BtnBoxLowColor" Grid.Row="2" Grid.Column="0" SelectedColor="{Binding BoxColor.LowColor}" Width="100"/>
+								<TextBlock Text="(High)" Grid.Column="1" Grid.Row="0" Style="{StaticResource NormalTextBlockStyle}"/>
+								<TextBlock Text="(Medium)" Grid.Column="1" Grid.Row="1" Style="{StaticResource NormalTextBlockStyle}"/>
+								<TextBlock Text="(Low)" Grid.Column="1" Grid.Row="2" Style="{StaticResource NormalTextBlockStyle}"/>
+							</Grid>
+						</StackPanel>
+					</Grid>
+				</GroupBox>
+			</Grid>
+			<GroupBox Header="Show/Hide details" Grid.Column="1">
+				<StackPanel Orientation="Vertical" Margin="5, 15,5,5">
+					<CheckBox Name="chkClashId" Content="ClashID" IsChecked="{Binding IsDisplayClashId}" Style="{StaticResource CheckBoxStyle}"/>
+					<CheckBox x:Name="ch200kd" Content="Display ClashType" IsChecked="{Binding IsDisplayClashType}" Style="{StaticResource CheckBoxStyle}" Visibility="Collapsed"/>
+				</StackPanel>
+			</GroupBox>
+		</Grid>
+
+		<StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
+			<Button x:Name="btnOk" Content="OK" Style="{StaticResource FooterButtonStyle}" Click="btnOk_Click"/>
+			<Button x:Name="bntnCancel" Content="Cancel" Style="{StaticResource FooterButtonStyle}" Click="bntnCancel_Click"/>
+		</StackPanel>
+	</Grid>
+</Window>

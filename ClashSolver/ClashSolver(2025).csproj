@@ -1,0 +1,136 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+		<PlatformTarget>x64</PlatformTarget>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <DefineConstants>$(DefineConstants);REVIT2025</DefineConstants>
+		<StartAction>Program</StartAction>
+    <LangVersion>preview</LangVersion>
+    <RootNamespace>ClashSolver</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RevitVersion Condition="$(DefineConstants.Contains('2025'))">2025</RevitVersion>
+    <RevitVersion Condition="$(DefineConstants.Contains('2026'))">2026</RevitVersion>
+    <RevitVersion Condition="$(DefineConstants.Contains('2027'))">2027</RevitVersion>
+    <RevitVersion Condition="$(DefineConstants.Contains('2028'))">2028</RevitVersion>
+    <RevitVersion Condition="$(DefineConstants.Contains('2029'))">2029</RevitVersion>
+    <RevitVersion Condition="$(DefineConstants.Contains('2030'))">2030</RevitVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+		<StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
+    <OutputPath>..\bin\$(Configuration)\$(RevitVersion)\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AssemblyName>ClashSolver</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+	
+  <PropertyGroup>
+    <PackageId>ClashSolver</PackageId>
+    <Authors>ClashSolver</Authors>
+    <Product>ClashSolver</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\about_32.png" />
+    <None Remove="Resources\clash_settings_32.png" />
+    <None Remove="Resources\compliance_setting_32.png" />
+    <None Remove="Resources\copy_link_32.png" />
+    <None Remove="Resources\cost_database_32.png" />
+    <None Remove="Resources\health_graph_32.png" />
+    <None Remove="Resources\help_32.png" />
+    <None Remove="Resources\message_link_32.png" />
+    <None Remove="Resources\place_marker_32.png" />
+    <None Remove="Resources\report_card_32.png" />
+    <None Remove="Resources\review_32.png" />
+    <None Remove="Resources\run_validation_32.png" />
+    <None Remove="Resources\team_32.png" />
+    <None Remove="Resources\tutorial_32.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Resources\about_32.png" />
+    <EmbeddedResource Include="Resources\clash_settings_32.png" />
+    <EmbeddedResource Include="Resources\compliance_setting_32.png" />
+    <EmbeddedResource Include="Resources\copy_link_32.png" />
+    <EmbeddedResource Include="Resources\cost_database_32.png" />
+    <EmbeddedResource Include="Resources\health_graph_32.png" />
+    <EmbeddedResource Include="Resources\help_32.png" />
+    <EmbeddedResource Include="Resources\message_link_32.png" />
+    <EmbeddedResource Include="Resources\place_marker_32.png" />
+    <EmbeddedResource Include="Resources\report_card_32.png" />
+    <EmbeddedResource Include="Resources\review_32.png" />
+    <EmbeddedResource Include="Resources\run_validation_32.png" />
+    <EmbeddedResource Include="Resources\team_32.png" />
+    <EmbeddedResource Include="Resources\tutorial_32.png" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.WindowsDesktop.App" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.0" />
+    <PackageReference Include="MouseKeyHook" Version="5.7.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
+    <PackageReference Include="System.Buffers" Version="4.6.0" />
+    <PackageReference Include="System.Reflection" Version="4.3.0" />
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\ClashSolver.UI\ClashSolver.UI_NETCore.csproj" />
+    <ProjectReference Include="..\Components\Components.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AdWindows">
+      <HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAddInUtility">
+      <HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\RevitAddInUtility.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI">
+      <HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIIFC">
+      <HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Forms\FrmRegistration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

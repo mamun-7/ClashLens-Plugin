@@ -1,0 +1,14 @@
+C:\Users\TopSky\Pictures\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Core.csproj.AssemblyReference.cache
+C:\Users\TopSky\Pictures\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Core.csproj.CoreCompileInputs.cache
+C:\Users\TopSky\Pictures\Development\Work\RevitPlugins\Shay\bin\Debug\Architexor.Core.dll
+C:\Users\TopSky\Pictures\Development\Work\RevitPlugins\Shay\bin\Debug\Architexor.Core.pdb
+C:\Users\TopSky\Pictures\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Core.csproj.Up2Date
+C:\Users\TopSky\Pictures\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Architexor.Core.dll
+C:\Users\TopSky\Pictures\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Architexor.Core.pdb
+X:\Development\Work\RevitPlugins\Shay\bin\Debug\Architexor.Core.dll
+X:\Development\Work\RevitPlugins\Shay\bin\Debug\Architexor.Core.pdb
+X:\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Core.csproj.AssemblyReference.cache
+X:\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Core.csproj.CoreCompileInputs.cache
+X:\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Core.csproj.Up2Date
+X:\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Architexor.Core.dll
+X:\Development\Work\RevitPlugins\Shay\Core\obj\Debug\Architexor.Core.pdb

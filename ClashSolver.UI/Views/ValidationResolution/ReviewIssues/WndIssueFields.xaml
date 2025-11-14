@@ -1,0 +1,40 @@
+﻿<Window x:Class="ClashSolver.UI.ValidationResolution.ReviewIssues.WndIssueFields"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ClashSolver.UI.ValidationResolution.ReviewIssues"
+             mc:Ignorable="d" Title="Issue Fields"
+				Height="300" MinHeight="200"
+				Width="200" MinWidth="160"
+             d:DesignHeight="200" d:DesignWidth="160">
+
+	<Window.Resources>
+		<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+	</Window.Resources>
+	
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<GroupBox Header="IssueList Display Fields" Margin="5">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
+					<Button Name="btnUp" Content="" Style="{StaticResource UpButtonStyle}"/>
+					<Button Name="btnDown" Content="" Style="{StaticResource DownButtonStyle}"/>
+				</StackPanel>
+				<ListBox Grid.Column="1" x:Name="listFields">
+					
+				</ListBox>
+			</Grid>
+		</GroupBox>
+		<StackPanel Grid.Row="1">
+			<Button x:Name="btnOk" Content="Ok" HorizontalAlignment="Center" Width="60" Margin="5"/>
+		</StackPanel>
+	</Grid>
+</Window>

@@ -1,0 +1,389 @@
+﻿<Window x:Class="ClashSolver.UI.ValidationResolution.RunValidation.WindowRunValidation"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:ClashSolver.UI.ValidationResolution.RunValidation"
+						xmlns:control="clr-namespace:Components;assembly=Components"
+            xmlns:util="clr-namespace:ClashSolver.UI" 
+						xmlns:uicomponents="clr-namespace:ClashSolver.UI.UIComponents"
+						mc:Ignorable="d" Title="Run Validation"
+						Width="320" MinWidth="320"
+						Height="800" MinHeight="640"
+						FontFamily="Arial"
+            d:DesignHeight="640" d:DesignWidth="320">
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<util:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+		</ResourceDictionary>
+	</Window.Resources>
+	
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<!--<GroupBox Grid.Row="0" Header="Validation Type"  BorderBrush="Gray" BorderThickness="1" Margin="5">
+			<StackPanel Orientation="Vertical">
+				<RadioButton Content="Quick Validation" IsChecked="{Binding ValidationType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Quick}" Style="{StaticResource RadioButtonStyle}" />
+				<RadioButton Content="Custom Validation" IsChecked="{Binding ValidationType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Custom}" Style="{StaticResource RadioButtonStyle}" />
+			</StackPanel>
+		</GroupBox>-->
+		<!--<StackPanel x:Name="spQuickPanel" Grid.Row="1" Visibility="Visible">
+			<uicomponents:SelectControl Height="350"/>
+		</StackPanel>-->
+		<StackPanel x:Name="spCustomPanel" Grid.Row="1">
+			<TabControl x:Name="tabMain">
+				<TabItem Header="Scope">
+					<ScrollViewer VerticalScrollBarVisibility="Auto">
+						<StackPanel Orientation="Vertical">
+							<CheckBox Grid.Row="0" Name="chkPartValidation" Content="Partial Valiation" IsChecked="{Binding IsFilterByParts}" Style="{StaticResource CheckBoxStyle}"/>
+							<Expander Header="By Scope Box" IsEnabled="{Binding IsFilterByParts}" BorderThickness="1" IsExpanded="False">
+								<StackPanel >
+									<!--<CheckBox x:Name="chkBySection" Content="Filter By SectionBox" IsChecked="{Binding IsFilterBySectionBox}"  IsEnabled="{Binding CanFilterByScopeBox}" Style="{StaticResource CheckBoxStyle}"/>-->
+									<CheckBox x:Name="chkByScope" Content="Filter By ScopeBox" IsChecked="{Binding IsFilterByScopeBox}" Style="{StaticResource CheckBoxStyle}"/>
+									<StackPanel IsEnabled="{Binding IsFilterByScopeBox}">
+										<uicomponents:SelectControl x:Name="selScopes" Height="250" />
+									</StackPanel>
+								</StackPanel>
+							</Expander>
+							<Expander Header="By Levels" IsEnabled="{Binding IsFilterByParts}" BorderThickness="1" IsExpanded="False">
+								<StackPanel>
+									<CheckBox x:Name="chkByLevel" Content="Filter By Level" IsChecked="{Binding IsFilterByLevel}" Style="{StaticResource CheckBoxStyle}"/>
+									<StackPanel IsEnabled="{Binding IsFilterByLevel}">
+										<uicomponents:SelectControl x:Name="selLevels" Height="250"/>
+									</StackPanel>
+								</StackPanel>
+							</Expander>
+							<Expander Header="By Zones" IsEnabled="{Binding IsFilterByParts}" IsExpanded="False">
+								<uicomponents:SelectControl Height="250"/>
+							</Expander>
+							<Expander Header="By Phases" IsEnabled="{Binding IsFilterByParts}" IsExpanded="False">
+								<uicomponents:SelectControl Height="250"/>
+							</Expander>
+						</StackPanel>
+					</ScrollViewer>
+				</TabItem>
+				<TabItem Header="Clash Detection">
+					<ScrollViewer VerticalScrollBarVisibility="Auto">
+						<StackPanel Orientation="Vertical" Margin="5">
+							<!--<CheckBox x:Name="chkQuickDetection" Content="Quick Detection" HorizontalAlignment="Center" IsChecked="True" Style="{StaticResource CheckBoxStyle}"/>-->
+							<Expander Header="Clash Detection Type" IsExpanded="True" IsEnabled="{Binding IsChecked, ElementName=chkQuickDetection}">
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+									</Grid.RowDefinitions>
+									<Grid Grid.Row="0">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="100"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<TextBlock Text="Clash Types:" Style="{StaticResource NormalTextBlockStyle}"/>
+										<StackPanel Orientation="Vertical" Grid.Column="1" HorizontalAlignment="Left">
+											<CheckBox x:Name="chkClashTypeHard" Content="Hard Clash" Style="{StaticResource CheckBoxStyle}" IsChecked="True"/>
+											<CheckBox x:Name="chkClashTypeSoft" Content="Soft Clash" Style="{StaticResource CheckBoxStyle}"/>
+											<CheckBox x:Name="chkClashTypeWorkflow" Content="Workflow Clash" Style="{StaticResource CheckBoxStyle}"/>
+										</StackPanel>
+									</Grid>
+									<Grid Grid.Row="1">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="100"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<TextBlock Text="Detection Level:" Style="{StaticResource NormalTextBlockStyle}"/>
+										<StackPanel Orientation="Vertical" Grid.Column="1" HorizontalAlignment="Left">
+											<RadioButton Content="Basic" IsChecked="{Binding DetailLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Basic}" Style="{StaticResource RadioButtonStyle}" />
+											<RadioButton Content="Intermediate" IsChecked="{Binding DetailLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Intermediate}" Style="{StaticResource RadioButtonStyle}" />
+											<RadioButton Content="Advanced" IsChecked="{Binding DetailLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Advanced}" Style="{StaticResource RadioButtonStyle}" />
+										</StackPanel>
+									</Grid>
+								</Grid>
+							</Expander>
+							<Expander Header="Clash Detection Sets" IsExpanded="True" IsEnabled="{Binding IsChecked, ElementName=chkQuickDetection}">
+								<StackPanel Orientation="Vertical" Margin="5">
+									<TextBlock Text="Select Clash Detection Sets to Apply:" Style="{StaticResource NormalTextBlockStyle}"/>
+									<ListBox x:Name="listClashSets" MinHeight="150" ItemsSource="{Binding Sets}">
+										<ListBox.ItemTemplate>
+											<DataTemplate>
+												<StackPanel Orientation="Horizontal" Margin="5">
+													<CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected}" Style="{StaticResource CheckBoxStyle}"/>
+													<!--<CheckBox Checked="ClashDetectionSet_Click"/>-->
+													<TextBlock Text="{Binding Name}" Width="200" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+													<!--<Button Content="..." Style="{StaticResource SymbolButtonStyle}" Click="ClashDetectionSetSettingButton_Click"/>-->
+													<!--<Button Content="..."/>-->
+												</StackPanel>
+											</DataTemplate>
+										</ListBox.ItemTemplate>
+									</ListBox>
+								</StackPanel>
+							</Expander>
+							<!--<Expander Header="Compliance Check Options" IsExpanded="True" IsEnabled="{Binding IsChecked, ElementName=chkQuickDetection}">
+						<StackPanel Orientation="Vertical" Margin="5">
+							<CheckBox x:Name="chkEnableComplianceCheck" Content="Enable Code Compliance Check" IsChecked="False" Style="{StaticResource CheckBoxStyle}"/>
+							<Button x:Name="btnComplianceSettings" Content="Compliance Settings..." IsEnabled="{Binding IsChecked, ElementName=chkEnableComplianceCheck}" HorizontalAlignment="Center" Style="{StaticResource LargeButtonStyle}"/>
+						</StackPanel>
+					</Expander>
+					<Expander Header="Workflow Clash Options" IsExpanded="True" IsEnabled="{Binding IsChecked, ElementName=chkQuickDetection}">
+					</Expander>-->
+						</StackPanel>
+					</ScrollViewer>
+				</TabItem>
+				<!--<TabItem Header="Resolution" IsEnabled="False">
+			<ScrollViewer VerticalScrollBarVisibility="Auto">
+				<StackPanel Orientation="Vertical" Margin="5">
+					<Expander Header="Resolution Strategy" IsExpanded="True">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<CheckBox Grid.Row="0" x:Name="chkStrategyOffset" Content="Offset Adjustment" IsChecked="True" Style="{StaticResource CheckBoxStyle}"/>
+							<RadioButton Grid.Row="1" Name="radStrategyOffsetOne" Content="Shift One Element" IsChecked="True" Style="{StaticResource RadioButtonStyle}" Margin="30,5,5,5"/>
+							<RadioButton Grid.Row="2" Name="radStrategyOffsetMult" Content="Shift Multiple Elements" IsChecked="True" Style="{StaticResource RadioButtonStyle}" Margin="30,5,5,5"/>
+							<CheckBox Grid.Row="3" x:Name="chkStrategyResize" Content="Resizing" IsChecked="True" Style="{StaticResource CheckBoxStyle}"/>
+							<TextBlock Grid.Row="4" Text="Resize Ducts, Pipes, or Conduits to Eliminate Conflicts" TextWrapping="Wrap" Style="{StaticResource NormalTextBlockStyle}" Margin="30,5,5,5"/>
+							<CheckBox Grid.Row="5" x:Name="chkStrategyRemove" Content="Element Removal" IsChecked="True" Style="{StaticResource CheckBoxStyle}"/>
+							<CheckBox Grid.Row="6" x:Name="chkStrategySplit" Content="Split and Reconnect" IsChecked="True" Style="{StaticResource CheckBoxStyle}"/>
+							<TextBlock Grid.Row="7" Text="Split Long Elements into Smaller Segments and Reroute" TextWrapping="Wrap" Style="{StaticResource NormalTextBlockStyle}" Margin="30,5,5,5"/>
+						</Grid>
+					</Expander>
+					<Expander Header="Priorities" IsExpanded="True">
+						<StackPanel Orientation="Vertical">
+							<TextBlock Text="Priority Ordering:" Style="{StaticResource NormalTextBlockStyle}"/>
+							<DataGrid HorizontalScrollBarVisibility="Auto" x:Name="gridPriorityOrdering" Grid.Column="1" Margin="5" Height="150">
+								<DataGrid.Resources>
+									<Style TargetType="DataGridColumnHeader">
+										<Setter Property="HorizontalContentAlignment" Value="Center" />
+									</Style>
+								</DataGrid.Resources>
+								<DataGrid.Columns>
+									<DataGridTextColumn Header="System" Width="120"/>
+									<DataGridCheckBoxColumn Header="Importance" Width="100"/>
+									<DataGridCheckBoxColumn Header="Criticality" Width="100"/>
+								</DataGrid.Columns>
+							</DataGrid>
+						</StackPanel>
+					</Expander>
+					<Expander Header="Routing Optimization" IsExpanded="True">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<TextBlock Grid.Row="0" Text="Preferred Routing Strategy:" Style="{StaticResource BoldTextBlockStyle}"/>
+							<StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" Margin="30,0,0,0">
+								<RadioButton x:Name="radRoutingStrategyShortPath" Content="Shortest Path" Style="{StaticResource RadioButtonStyle}"/>
+								<RadioButton x:Name="radRoutingStrategyLowCost" Content="Cost-Based Path" Style="{StaticResource RadioButtonStyle}"/>
+							</StackPanel>
+							<TextBlock Grid.Row="2" Text="Routing Constraints:" Style="{StaticResource BoldTextBlockStyle}"/>
+							<Grid Grid.Row="3">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+									<TextBlock Text="Maximum Allowed Detour Length:" Style="{StaticResource NormalTextBlockStyle}"/>
+									<TextBox x:Name="txtMaxDetourLength" Text="{Binding MaxDetourLen}" Style="{StaticResource SmallTextBoxStyle}" Width="50"/>
+								</StackPanel>
+								<StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left">
+									<CheckBox x:Name="chkPreferredZones" Content="Preferred Routing Zones:" Style="{StaticResource CheckBoxStyle}"/>
+									<control:MultiSelectComboBox Name="mselPreferredZones" Width="220" Height="20" Margin="30,0,0,0" />
+								</StackPanel>
+								<StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Left">
+									<CheckBox x:Name="chkAvoidZones" Content="Avoidance Zones:" Style="{StaticResource CheckBoxStyle}"/>
+									<control:MultiSelectComboBox Name="mselAvoidZones" Width="220" Height="20" Margin="30,0,0,0" />
+								</StackPanel>
+							</Grid>
+							<TextBlock Grid.Row="4" Text="System Isolation Preferences:" Style="{StaticResource BoldTextBlockStyle}"/>
+							<StackPanel Grid.Row="5" Orientation="Vertical" HorizontalAlignment="Left" Margin="30,0,0,0">
+								<RadioButton x:Name="radRerouteEntireSystems" Content="Reroute Entire Systems" Style="{StaticResource RadioButtonStyle}"/>
+								<RadioButton x:Name="radRerouteLocalizedSystems" Content="Reroute Localized Systems" Style="{StaticResource RadioButtonStyle}"/>
+							</StackPanel>
+						</Grid>
+					</Expander>
+					<Expander Header="Advanced" IsExpanded="True">
+						<StackPanel Orientation="Vertical">
+							<CheckBox x:Name="chkEnableAIdriven" Content="Enable AI-Assisted Suggestions" Style="{StaticResource CheckBoxStyle}" IsChecked="True"/>
+							<CheckBox x:Name="chkEnableEscalation" Content="Enable Escalation" Style="{StaticResource CheckBoxStyle}" IsChecked="True"/>
+							<Grid Grid.Row="0" Margin="20,0,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<TextBlock Text="Escalation Pathway:" Style="{StaticResource NormalTextBlockStyle}"/>
+								<StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
+									<RadioButton x:Name="radEscNotifyUser" Content="Notify User" Style="{StaticResource RadioButtonStyle}"/>
+									<RadioButton x:Name="radEscSupervisor" Content="Supervisor Escalation" Style="{StaticResource RadioButtonStyle}"/>
+								</StackPanel>
+								<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2">
+									<TextBlock Text="Automatic Retry Limit: " Style="{StaticResource NormalTextBlockStyle}"/>
+									<TextBox x:Name="txtAutomaticRetryLimit" Style="{StaticResource MediumTextBoxStyle}"/>
+								</StackPanel>
+							</Grid>
+						</StackPanel>
+					</Expander>
+				</StackPanel>
+			</ScrollViewer>
+		</TabItem>
+		<TabItem Header="Material Cost" IsEnabled="False">
+			<ScrollViewer VerticalScrollBarVisibility="Auto">
+				<StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+					<CheckBox Content="Enable Material Cost Analysis" Style="{StaticResource CheckBoxStyle}"/>
+					<Expander Header="General" IsExpanded="False">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+								<TextBlock Text="Currency: " Style="{StaticResource NormalTextBlockStyle}"/>
+								<ComboBox Name="cmbCurrency" Style="{StaticResource NormalComboBoxStyle}"/>
+							</StackPanel>
+							<TextBlock Grid.Row="1" Text="Material Cost Database: " Style="{StaticResource NormalTextBlockStyle}"/>
+							<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+								<ComboBox Name="cmbDatabase" Style="{StaticResource NormalComboBoxStyle}"/>
+								<Button Content="..." Style="{StaticResource SymbolButtonStyle}" Name="btnDatabase"/>
+							</StackPanel>
+							<CheckBox Grid.Row="3" Name="chkEnableCustomMatCost" Content="Custom Material Costs"/>
+							<Grid Grid.Row="4">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<StackPanel Orientation="Vertical" VerticalAlignment="Center">
+									<Button x:Name="btnAddCustomMatCost" Content="+" Style="{StaticResource SymbolButtonStyle}"/>
+									<Button x:Name="btnDelCustomMatCost" Content="-" Style="{StaticResource SymbolButtonStyle}"/>
+								</StackPanel>
+								<DataGrid x:Name="gridCustomMatCosts" Grid.Column="1" Margin="5" Height="150">
+									<DataGrid.Columns>
+										<DataGridTextColumn Header="Name" Width="50"/>
+										<DataGridTextColumn Header="Unit Cost" Width="100"/>
+										<DataGridComboBoxColumn Header="Unit Measure" Width="100"/>
+									</DataGrid.Columns>
+								</DataGrid>
+							</Grid>
+						</Grid>
+					</Expander>
+					<Expander Header="System-Specific Costs" IsExpanded="True">
+						<StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+							<CheckBox x:Name="chkUseSystemCosts" Content="Use System-specific Costs" Style="{StaticResource CheckBoxStyle}"/>
+							<DataGrid HorizontalScrollBarVisibility="Auto" x:Name="gridSystemCosts" Grid.Column="1" Margin="5" Height="150">
+								<DataGrid.Resources>
+									<Style TargetType="DataGridColumnHeader">
+										<Setter Property="HorizontalContentAlignment" Value="Center" />
+									</Style>
+								</DataGrid.Resources>
+								<DataGrid.Columns>
+									<DataGridTextColumn Header="System" Width="100"/>
+									<DataGridTextColumn Header="Unit Cost" Width="60"/>
+									<DataGridComboBoxColumn Header="Unit Measure" Width="80"/>
+									<DataGridComboBoxColumn Header="Description" Width="100"/>
+								</DataGrid.Columns>
+							</DataGrid>
+						</StackPanel>
+					</Expander>
+					<Expander Header="Cost Analysis Constraints" IsExpanded="True">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<CheckBox Name="chkMaxMatCost" Content="Maximum Allowed Material Cost" Style="{StaticResource CheckBoxStyle}"/>
+							<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+								<TextBox x:Name="txtMaxMatCost" Style="{StaticResource MediumTextBoxStyle}"/>
+								<ComboBox Name="cmbCurrencyForMax" Style="{StaticResource NormalComboBoxStyle}"/>
+							</StackPanel>
+							<CheckBox Grid.Row="2" Name="cmbUseVendorSpecific" Content="Use Vendor-Specific Costs"/>
+							<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+								<TextBox Name="txtVendorCostDb" Style="{StaticResource LargeTextBoxStyle}"/>
+								<Button Name="btnImport" Content="Import..." Style="{StaticResource MediumButtonStyle}"/>
+							</StackPanel>
+						</Grid>
+					</Expander>
+					<Expander Header="Optimization Parameters" IsExpanded="True">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+								<TextBlock Text="Routing Cost Optimization: " Style="{StaticResource NormalTextBlockStyle}"/>
+								<ComboBox Name="cmbOptimizeOption" Style="{StaticResource NormalComboBoxStyle}">
+									<ComboBoxItem Content="Minimize Length"/>
+									<ComboBoxItem Content="Minimize Cost"/>
+								</ComboBox>
+							</StackPanel>
+							<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+								<TextBlock Text="Material Efficiency Factor: " Style="{StaticResource NormalTextBlockStyle}"/>
+								<TextBox x:Name="txtMatEfficiencyFactor" Style="{StaticResource MediumTextBoxStyle}"/>
+							</StackPanel>
+							<Slider x:Name="sldMatEffFactor" Minimum="0" Maximum="100" Value="80" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch"
+							TickPlacement="Both" TickFrequency="5" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
+						</Grid>
+					</Expander>
+				</StackPanel>
+			</ScrollViewer>
+		</TabItem>-->
+				<TabItem Header="Advanced">
+					<ScrollViewer VerticalScrollBarVisibility="Auto">
+						<StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+							<Expander Header="Algorithm Settings">
+							</Expander>
+							<Expander Header="Simulation Settings">
+							</Expander>
+							<Expander Header="Validation Depth">
+							</Expander>
+							<Expander Header="Performance and Execution">
+							</Expander>
+						</StackPanel>
+					</ScrollViewer>
+				</TabItem>
+			</TabControl>
+		</StackPanel>
+		
+		<Grid Grid.Row="2" Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="btnReset" Content="Reset" Grid.Column="0" Margin="2" Click="btnReset_Click"/>
+			<Button x:Name="btnRun" Content="Run" Grid.Column="1" Margin="2" IsEnabled="{Binding IsValid}" Click="btnRun_Click"/>
+			<Button x:Name="btnCancel" Content="Cancel" Grid.Column="2" Margin="2" Click="btnCancel_Click"/>
+			<Button x:Name="btnCopilot" Content="Copilot >>" Grid.Column="3" Margin="2" Click="btnCopilot_Click"/>
+		</Grid>
+	</Grid>
+</Window>

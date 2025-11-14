@@ -1,0 +1,208 @@
+﻿<Window x:Class="ClashSolver.UI.SettingsUtilities.WindowClashSetting"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			xmlns:local="clr-namespace:ClashSolver.UI.SettingsUtilities"
+			mc:Ignorable="d" Title="Clash Settings"
+			MinWidth="800" MinHeight="500"
+			Width="800" Height=" 500"
+			d:DesignHeight="500" d:DesignWidth="800" WindowStartupLocation="CenterScreen">
+	<Window.Resources>
+		<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+	</Window.Resources>
+
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="40"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="3*"/>
+		</Grid.ColumnDefinitions>
+		<!-- Clash Detection Set Sidebar -->
+		<GroupBox Header="Clash Detection Set" HorizontalAlignment="Stretch" Margin="0" Grid.Row="0" Grid.Column="0">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<!-- Buttons -->
+				<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+					<Button x:Name="btnNew" ToolTip="Create New" Style="{StaticResource NewButtonStyle}" Click="btnNew_Click"/>
+					<Button x:Name="btnDuplicate" ToolTip="Duplicate" Style="{StaticResource DuplicateButtonStyle}" Click="btnDuplicate_Click"/>
+					<Button x:Name="btnRename" ToolTip="Rename" Style="{StaticResource RenameButtonStyle}" Click="btnRename_Click"/>
+					<Button x:Name="btnDelete" ToolTip="Delete" Style="{StaticResource DeleteButtonStyle}" Click="btnDelete_Click"/>
+				</StackPanel>
+
+				<!-- List Box -->
+				<ListBox x:Name="listClashDetectionSet" ItemsSource="{Binding Sets}" Grid.Row="1" SelectionChanged="listClashDetectionSet_SelectionChanged">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel x:Name="spDetectionSet" Margin="2">
+								<TextBox x:Name="txtName" Text="{Binding Name}" BorderThickness="0" Background="Transparent" IsReadOnly="True" TextChanged="txtName_TextChanged" PreviewKeyDown="txtName_PreviewKeyDown" LostFocus="txtName_LostFocus">
+									<TextBox.Style>
+										<Style TargetType="{x:Type TextBox}">
+											<Setter Property="IsHitTestVisible" Value="False"/>
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}, AncestorLevel=1}}" Value="True">
+													<Setter Property="IsHitTestVisible" Value="True"/>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</TextBox.Style>
+								</TextBox>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</GroupBox>
+
+		<Grid Grid.Row="0" Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<!-- Selected Clash Detection Set Section Panel -->
+			<StackPanel Grid.Row="0" Orientation="Horizontal"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0">
+				<TextBlock Text="Selected Clash Detection Set:" VerticalAlignment="Top" Style="{StaticResource NormalTextBlockStyle}"/>
+				<TextBlock Text="{Binding SelectedSet.Name}" Style="{StaticResource NormalTextBlockStyle}"/>
+			</StackPanel>
+
+			<TabControl x:Name="tabDetectionSet" Margin="5" Grid.Row="1">
+				<TabItem Header="Clash Pair">
+					<Grid Margin="0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="96*"/>
+							<ColumnDefinition Width="188*"/>
+							<ColumnDefinition Width="285*"/>
+						</Grid.ColumnDefinitions>
+
+						<CheckBox x:Name="chkIncludeLink" Content="Include Linked Projects" IsChecked="{Binding SelectedSet.IsIncludeLink}" Style="{StaticResource CheckBoxStyle}" Checked="chkIncludeLink_Checked" Unchecked="chkIncludeLink_Checked" Grid.ColumnSpan="2" Margin="5,0,4,0"/>
+
+						<!-- Left Panel -->
+						<GroupBox Grid.Row="1" Grid.Column="0" Header="Categories From" Margin="5,5,4,5" Grid.ColumnSpan="2">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+								<ComboBox x:Name="cmbCompareCategoryA" Grid.Row="0" Margin="0,5,0,0" ItemsSource="{Binding SelectedSet.ALinkedModels}" SelectedItem="{Binding SelectedSet.ALinkedModel}" DisplayMemberPath="Name" Style="{StaticResource StretchComboBoxStyle}"/>
+								<ListBox x:Name="listCompareCategoryA" Grid.Row="1" ItemsSource="{Binding SelectedSet.AElementCategories}" >
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<StackPanel x:Name="spCompare" Orientation="Horizontal">
+												<CheckBox IsChecked="{Binding IsSelected}" Style="{StaticResource CheckBoxStyle}"/>
+												<TextBlock Text="{Binding Name}" Style="{StaticResource NormalTextBlockStyle}"/>
+											</StackPanel>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListBox>
+							</Grid>
+						</GroupBox>
+
+						<!-- Right Panel -->
+						<GroupBox Grid.Row="1" Grid.Column="2" Header="Categories From" Margin="6,5,5,5">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+								<ComboBox x:Name="cmbCompareCategoryB" Grid.Row="0" Margin="0,5,0,0" ItemsSource="{Binding SelectedSet.BLinkedModels}" SelectedItem="{Binding SelectedSet.BLinkedModel}" DisplayMemberPath="Name" Style="{StaticResource StretchComboBoxStyle}"/>
+								<ListView x:Name="listCompareCategoryB" Grid.Row="1" ItemsSource="{Binding SelectedSet.BElementCategories}" Margin="0">
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<StackPanel x:Name="spCompare" Orientation="Horizontal" Margin="2">
+												<CheckBox IsChecked="{Binding IsSelected}" Style="{StaticResource CheckBoxStyle}"/>
+												<TextBlock Text="{Binding Name}" Style="{StaticResource NormalTextBlockStyle}"/>
+											</StackPanel>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListView>
+							</Grid>
+						</GroupBox>
+					</Grid>
+				</TabItem>
+				<TabItem Header="Tolerance &amp; Severity" IsEnabled="False">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="1*"/>
+							<ColumnDefinition Width="1*"/>
+						</Grid.ColumnDefinitions>
+
+						<!-- Global Tolerance -->
+						<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="5" Height="30" VerticalAlignment="Top">
+							<TextBlock x:Name="lblTolerance" Text="Global Tolerance:" VerticalAlignment="Center" Style="{StaticResource NormalTextBlockStyle}"/>
+							<TextBox x:Name="txtTolerance" Text="100" Style="{StaticResource MediumTextBoxStyle}"/>
+						</StackPanel>
+
+						<!-- Check Boxes -->
+						<StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Margin="5,35,5,5" VerticalAlignment="Stretch">
+							<CheckBox x:Name="chkElementSize" Content="Dynamic Tolerance Based on Element Size" Style="{StaticResource CheckBoxStyle}"/>
+							<CheckBox x:Name="chkSpecificTolerance" Content="System-Specific Tolerances" Style="{StaticResource CheckBoxStyle}"/>
+						</StackPanel>
+
+						<!-- Severity Section -->
+						<GroupBox Header="Severity Levels" Grid.Row="0" Grid.Column="1">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<TextBlock Text="High:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Style="{StaticResource NormalTextBlockStyle}"/>
+								<TextBox x:Name="txtHigh" Grid.Row="0" Grid.Column="1" Text="50" Style="{StaticResource LargeTextBoxStyle}"/>
+								<TextBlock Text="Medium:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Style="{StaticResource NormalTextBlockStyle}"/>
+								<TextBox  Grid.Row="1" Grid.Column="1" Text="100" Style="{StaticResource LargeTextBoxStyle}"/>
+								<TextBlock x:Name="lblLow" Text="Low:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Style="{StaticResource NormalTextBlockStyle}"/>
+								<TextBox x:Name="txtLow" Grid.Row="2" Grid.Column="1" Text="200" Style="{StaticResource LargeTextBoxStyle}" />
+							</Grid>
+						</GroupBox>
+
+						<!-- Table -->
+						<DataGrid Grid.Row="1" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=chkSpecificTolerance}" AutoGenerateColumns="False" Margin="5">
+							<DataGrid.Resources>
+								<Style TargetType="DataGridColumnHeader">
+									<Setter Property="HorizontalContentAlignment" Value="Center" />
+								</Style>
+							</DataGrid.Resources>
+							<DataGrid.Columns>
+								<DataGridTextColumn Header="No" Width="30"/>
+								<DataGridTextColumn Header="System" Width="150"/>
+								<DataGridTextColumn Header="Tolerance Name" Width="200"/>
+								<DataGridTextColumn Header="High" Width="100"/>
+								<DataGridTextColumn Header="Medium" Width="100"/>
+								<DataGridTextColumn Header="Low" Width="100"/>
+								<DataGridTextColumn Header="Description" Width="300"/>
+							</DataGrid.Columns>
+						</DataGrid>
+
+						<!--<Button x:Name = "BtnReset" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource FooterButtonStyle}"/>-->
+					</Grid>
+				</TabItem>
+			</TabControl>
+		</Grid>
+
+		<!-- Footer Buttons -->
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+			<Button x:Name="btnOk" Content="OK" Style="{StaticResource FooterButtonStyle}" Click="btnOk_Click"/>
+			<Button x:Name="btnCancel" Content="Cancel" Style="{StaticResource FooterButtonStyle}" Click="btnCancel_Click"/>
+			<Button x:Name="btnCopilot" Content="Copilot>>" Style="{StaticResource FooterButtonStyle}" Click="btnCopilot_Click"/>
+		</StackPanel>
+	</Grid>
+</Window>

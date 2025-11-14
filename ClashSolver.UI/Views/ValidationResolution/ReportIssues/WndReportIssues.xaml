@@ -1,0 +1,110 @@
+﻿<Window x:Class="ClashSolver.UI.ValidationResolution.ReportIssues.WndReportIssues"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:local="clr-namespace:ClashSolver.UI.ValidationResolution.ReportIssues"
+						xmlns:control="clr-namespace:Components;assembly=Components"
+						xmlns:util="clr-namespace:ClashSolver.UI"
+						xmlns:component="clr-namespace:ClashSolver.UI.UIComponents"
+            mc:Ignorable="d" Title="Issue Report"
+						MinHeight="300" MinWidth="600"
+						Height="500" Width="800"
+            d:DesignHeight="450" d:DesignWidth="800">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/ClashSolver.UI;component/Common/Generic.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<util:EnumDescriptionConverter x:Key="EnumConverter" />
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<GroupBox Grid.Row="0" Grid.Column="0" Header="Contents" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+			<component:SelectControl x:Name="reportContentControl" Items="{Binding ReportContents}"/>
+
+			<!--<ListBox ItemsSource="{Binding ReportContents}" Margin="5">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel x:Name="spCompare" Orientation="Horizontal">
+							<CheckBox IsChecked="{Binding Selected}" Style="{StaticResource CheckBoxStyle}"/>
+							<TextBlock Text="{Binding Name}" Style="{StaticResource NormalTextBlockStyle}"/>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>-->
+		</GroupBox>
+		
+		<GroupBox Grid.Row="0" Grid.Column="1" Header="Include Clashes" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<!--<StackPanel Grid.Row="0" Orientation="Vertical">
+					<TextBlock Text="For Clash Groups, include:" Margin="5,5,5,0" Style="{StaticResource NormalTextBlockStyle}"/>
+					<ComboBox ItemsSource="{Binding ClashGroups}" SelectedValue="{Binding SelectedGroup}" HorizontalAlignment="Left" Style="{StaticResource LargeComboBoxStyle}"/>
+				</StackPanel>-->
+				<TextBlock Grid.Row="0" Text="Include these statuses:" VerticalAlignment="Top"  Style="{StaticResource NormalTextBlockStyle}"/>
+				<component:SelectControl x:Name="statusControl" Grid.Row="1" Items="{Binding Statuses}"/>
+				<!--<ListBox Grid.Row="1" ItemsSource="{Binding Statuses}" VerticalAlignment="Stretch" Margin="5,25,5,5">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel x:Name="spCompare" Orientation="Horizontal">
+								<CheckBox IsChecked="{Binding Selected}" Style="{StaticResource CheckBoxStyle}"/>
+								<TextBlock Text="{Binding Name}" Style="{StaticResource NormalTextBlockStyle}"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>-->
+			</Grid>
+			
+		</GroupBox>
+
+		<GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Output Settings" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Grid.Column="0" Orientation="Vertical" Margin="5">
+					<TextBlock Text="Report Type" Margin="5, 0" Style="{StaticResource NormalTextBlockStyle}"/>
+					<ComboBox x:Name="cmbReportTypes" SelectedValue="{Binding SelectedReportType}" IsReadOnly="True" Style="{StaticResource StretchComboBoxStyle}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Converter={StaticResource EnumConverter}}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</StackPanel>
+				<StackPanel Grid.Column="1" Orientation="Vertical" Margin="5">
+					<TextBlock Text="Report Format" Margin="5, 0" Style="{StaticResource NormalTextBlockStyle}"/>
+					<ComboBox x:Name="cmbReportFormat" SelectedValue="{Binding SelectedReportFormat}" IsReadOnly="True" Style="{StaticResource StretchComboBoxStyle}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Converter={StaticResource EnumConverter}}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</StackPanel>
+			</Grid>
+		</GroupBox>
+
+		<!-- Footer Buttons -->
+		<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,5,0,0">
+			<Button Name="btnOK" Content="OK" Click="btnOK_Click" Style="{StaticResource FooterButtonStyle}"/>
+			<Button Name="btnCancel" Content="Cancel" Click="btnCancel_Click" Style="{StaticResource FooterButtonStyle}"/>
+		</StackPanel>
+	</Grid>
+</Window>

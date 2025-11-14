@@ -1,0 +1,99 @@
+﻿<Window x:Class="ClashSolver.UI.Views.HelpAssistance.LicenseWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ClashSolver.UI.Views.HelpAssistance"
+             mc:Ignorable="d" 
+             Title="LICENSE" Height="250" Width="500" WindowStartupLocation="CenterScreen"
+							ResizeMode="NoResize">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!-- User Info Section -->
+		<GroupBox Header="User Information" Grid.Row="0">
+			<Grid Margin="10">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="150"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+
+				<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Name.Surname(*)"/>
+				<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SurName}" Margin="5,2"/>
+
+				<TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Email Address(*)"/>
+				<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EmailAddress}" Margin="5,2"/>
+
+				<TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Device ID(*)"/>
+				<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DeviceId}" Margin="5,2"/>
+			</Grid>
+		</GroupBox>
+
+		<!-- Subscription Section -->
+		<GroupBox Header="Subscription" Grid.Row="1" Margin="0,10,0,0">
+			<Grid Margin="10">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+
+				<Button Content="Help" Grid.Row="0" Grid.Column="0" Width="60" Margin="2"/>
+				<TextBox Text="1.0.0" Width="60" IsReadOnly="True" Background="LightGray" Margin="2" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center"/>
+
+                <Button x:Name="btnLicense" Content="Request License" Width="110" Margin="2" Grid.Row="0" Grid.Column="3" Click="btnLicense_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLicense}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsLicense}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+								<DataTrigger Binding="{Binding IsLoading}" Value="False">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="btnCancel" Content="Cancel" Width="60" Margin="2" Grid.Row="0" Grid.Column="4" Click="btnCancel_Click"/>
+				<TextBlock Text="{Binding EndDateStr}" Background="White" Margin="2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
+					<TextBlock.Style>
+						<Style TargetType="TextBlock">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding IsLicense}" Value="True">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding IsLicense}" Value="False">
+									<Setter Property="Visibility" Value="Collapsed"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+				</TextBlock>
+			</Grid>
+		</GroupBox>
+	</Grid>
+</Window>

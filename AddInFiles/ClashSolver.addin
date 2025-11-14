@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>ClashSolver</Name>
+    <FullClassName>ClashSolver.Application</FullClassName>
+    <Assembly>DLL File URL</Assembly>
+    <AddInId>502fe383-2648-4e98-adf8-5e6047f9dc40</AddInId>
+    <VendorId>ADSK</VendorId>
+    <VendorDescription>Architexor, Inc, www.architexor.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>
